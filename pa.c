@@ -98,24 +98,44 @@ void parse_input(int argc, char* argv[], struct value_st *input){
 }
 
 int do_pipeline_0(struct value_st *input){
+    char *root = "/usr/bin/";
+    char *cmd = input->argv1[0];
+    char *path = malloc(strlen(root) + strlen(cmd) + 1);
+    strcpy(path, root);
+    strcat(path, cmd);
+    if(input->process[0] - 1 == 1){
+       execl(path, cmd, input->argv1[1], NULL);
+    }
+    else if(input->process[0] - 1 == 2){
+        execl(path, cmd, input->argv1[1], input->argv1[2], (char *)NULL);
+    }
+    return 0;
+}
+
+int do_pipeline_1(struct value_st *input){
     pid_t id;
-    int count;
+    int count, nbytes;
     char buf[100];
-    int fildes[2];
-    pipe(fildes);
+    int pipe1[2];
+    int pipe2[2];
+    pipe(pipe1);
+    pipe(pipe2);
     id = fork();
+    char *root = "/usr/bin/";
 
     if (id == 0) {
         /* we are in the child */
         sleep(1);
-        close(fildes[0]);
-        char *root = "/usr/bin/";
+        close(pipe1[0]);
+        close(1);
+        dup(pipe1[1]);
         char *cmd = input->argv1[0];
         char *path = malloc(strlen(root) + strlen(cmd) + 1);
         strcpy(path, root);
         strcat(path, cmd);
+        close(pipe1[0]);
         close(1);
-        dup(fildes[1]);
+        dup(pipe1[1]);
         if(input->process[0] - 1 == 1){
             execl(path, cmd, input->argv1[1], NULL);
         }
@@ -125,35 +145,43 @@ int do_pipeline_0(struct value_st *input){
         
     } else {
        /* we are in the parent */
-        close(fildes[1]); 
-        close(0);  
-        dup(fildes[0]);
+        close(pipe1[1]);
+        close(0);
+        dup(pipe1[0]);
         id = wait(NULL);
-        read(0, buf, 100);
-        // printf("buf[] = %s\n", buf);
-        if (write(0, buf, 100) < 0) {
+        if (read(0, buf, 100) < 0) {
+            fprintf(stderr, "cannot read from pipe\n");
+        }
+        if (write(pipe2[1], buf, strlen(buf)) < 0) {
            fprintf(stderr, "cannot write to pipe\n");
         }
-        if(execl("/usr/bin/wc", "wc", "-l", (char *)NULL) < 0){
-            perror("execl error");
+        close(pipe2[1]);
+        close(0);
+        dup(pipe2[0]);
+        close(pipe2[0]);
+        printf("buf is: %s\n", buf);
+        char *cmd = input->argv2[0];
+        char *path = malloc(strlen(root) + strlen(cmd) + 1);
+        strcpy(path, root);
+        strcat(path, cmd);
+        // printf("param num: %d\n", input->process[1]);
+        if(input->process[1] - 1 == 1){
+            execl(path, cmd, input->argv2[1], NULL);
         }
-        // write(0, buf, 100);
-        // execl("/usr/bin/wc", "wc", "-l", (char *)NULL);
+        else if(input->process[1] - 1 == 2){
+            execl(path, cmd, input->argv2[0], input->argv2[1], (char *)NULL);
+        }
+        // execl("/usr/bin/wc", "wc", "-l", NULL);
     }
 
     return 0;
 }   
-
-int do_pipeline_1(struct value_st *input){
-    return 0;    
-}
 
 int exec(struct value_st *input){
     if(input->pipe_count == 0){
         do_pipeline_0(input);
     }
     else if(input->pipe_count == 1){
-        do_pipeline_0(input);
         do_pipeline_1(input);
     }
 
