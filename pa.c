@@ -167,7 +167,7 @@ int do_pipeline_1(struct value_st *input){
         strcpy(path, root);
         strcat(path, cmd);
         // printf("param num: %d\n", input->process[1]);
-        printf("cmd is: %s\n", cmd);
+        // printf("cmd is: %s\n", cmd);
         if(input->process[1] - 1 == 1){
             execl(path, cmd, input->argv2[1], NULL);
         }
@@ -180,6 +180,36 @@ int do_pipeline_1(struct value_st *input){
     return 0;
 }   
 
+int do_pipeline_2(struct value_st *input){
+    pid_t id;
+    int count, nbytes;
+    char buf[100];
+    int pipe1[2];
+    int pipe2[2];
+    // pipe(pipe1);
+    // pipe(pipe2);
+    id = fork();
+    char *root = "/usr/bin/";
+
+    for(int i = 0; i < 2; i++){
+        id = fork();
+        pipe(pipe1);
+        pipe(pipe2);
+
+        if(id != 0){
+            printf("in parent\n");
+            wait(NULL);
+        }
+        else{
+            printf("ChildI: %d\n", i);
+            printf("child id: %d\n", getpid());
+            exit(0);
+        }
+    }
+
+    return 0;
+}
+
 int exec(struct value_st *input){
     if(input->pipe_count == 0){
         do_pipeline_0(input);
@@ -187,6 +217,11 @@ int exec(struct value_st *input){
     else if(input->pipe_count == 1){
         do_pipeline_1(input);
     }
+    else if(input->pipe_count == 2){
+        do_pipeline_2(input);
+    }
+
+    return 0;
 
 }
 
@@ -196,7 +231,7 @@ int main(int argc, char* argv[]) {
     struct value_st input;
     input.pipe_count = 0;
 
-    // restrained up to 2 pipelines
+    // support up to 2 pipelines and up to 2 parameters
     parse_input(argc, argv, &input);
 
     // execute the program
