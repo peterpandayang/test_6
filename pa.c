@@ -167,11 +167,12 @@ int do_pipeline_1(struct value_st *input){
         strcpy(path, root);
         strcat(path, cmd);
         // printf("param num: %d\n", input->process[1]);
+        printf("cmd is: %s\n", cmd);
         if(input->process[1] - 1 == 1){
             execl(path, cmd, input->argv2[1], NULL);
         }
         else if(input->process[1] - 1 == 2){
-            execl(path, cmd, input->argv2[0], input->argv2[1], (char *)NULL);
+            execl(path, cmd, input->argv2[1], input->argv2[2], (char *)NULL);
         }
         // execl("/usr/bin/wc", "wc", "-l", NULL);
     }
