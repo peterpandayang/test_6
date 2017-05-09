@@ -191,7 +191,8 @@ int do_pipeline_2(struct value_st *input){
     id = fork();
     char *root = "/usr/bin/";
 
-    for(int i = 0; i < 2; i++){
+    int i;
+    for(i = 0; i < 2; i++){
         id = fork();
         pipe(pipe1);
         pipe(pipe2);
