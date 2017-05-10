@@ -156,8 +156,8 @@ void print_buf(char* read_buf){
     read_buf[len] = '\0';
 }
 
-int write_to_file(struct value_st *input, char* read_buf, int index, char* cmd){
-    int bytes, lines;
+int write_to_file(struct value_st *input, char* read_buf, int index, char* cmd, int bytes){
+    int lines;
     char* bytes_str;
     char* lines_str;
     char* index_str;
@@ -167,7 +167,7 @@ int write_to_file(struct value_st *input, char* read_buf, int index, char* cmd){
 
     // print_buf(read_buf);
 
-    bytes = strlen(read_buf);
+    // bytes = strlen(read_buf);
     // write(2, &bytes, 2);
     // write(2, &bytes, 2);
     bytes_str = itoa(bytes);
@@ -343,7 +343,7 @@ int do_with_one_pipe(struct value_st *input){
         write(2, "cannot read from pipe\n", 23);
         exit(-1);
     }
-    write_to_file(input, &read_buf, 1, input->argv2[0]);
+    write_to_file(input, &read_buf, 1, input->argv2[0], bytes);
 
     return 0;
 }
