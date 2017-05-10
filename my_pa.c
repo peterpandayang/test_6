@@ -158,8 +158,6 @@ int write_to_file(struct value_st *input, char* read_buf, int index, char* cmd){
     // write(2, &bytes, 2);
     // write(2, &bytes, 2);
     bytes_str = itoa(bytes);
-    write(2, bytes_str, 2);
-    write(2, bytes_str, 2);
     lines = count_lines(read_buf, bytes);
     lines_str = itoa(lines);
     is_asc = check_asc(read_buf);
@@ -266,21 +264,20 @@ int do_with_one_pipe(struct value_st *input){
         close(pipe_1_m1[1]);
         close(0);
         dup(pipe_1_m1[0]);
-        int bytes;
-        int lines;
-        
-        if(bytes = read(0, read_buf, buf_size) < 0) {
+        // int bytes;
+        // int lines;
+        // printf("line is: %d\n", lines);
+        if(read(0, read_buf, 64) < 0) {
             write(2, "cannot read from pipe\n", 23);
             exit(-1);
         }
-        lines = count_lines(read_buf, strlen(read_buf));
-        printf("line is: %d\n", lines);
+        // lines = count_lines(read_buf, strlen(read_buf));
 
         close(1);
         dup(pipe_m1_p[1]);
         close(pipe_m1_p[1]);
 
-        if (write(1, read_buf, buf_size) < 0) {
+        if (write(1, read_buf, strlen(read_buf)) < 0) {
            write(2, "cannot write to pipe\n", 21);
         }
 
@@ -288,7 +285,7 @@ int do_with_one_pipe(struct value_st *input){
         dup(pipe_m1_2[1]);
         close(pipe_m1_2[1]);
 
-        if (write(1, read_buf, buf_size) < 0) {
+        if (write(1, read_buf, strlen(read_buf)) < 0) {
            write(2, "cannot write to pipe\n", 21);
         }
 
@@ -331,7 +328,7 @@ int do_with_one_pipe(struct value_st *input){
 
     // int byte = read(0, read_buf, 64);
     // printf("byte is: %d\n", byte);
-    if(read(0, read_buf, buf_size) < 0) {
+    if(read(0, read_buf, 64) < 0) {
         write(2, "cannot read from pipe\n", 23);
         exit(-1);
     }
