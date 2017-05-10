@@ -97,7 +97,6 @@ int exec_process_2(struct value_st *input){
         args[1] = input->argv2[1];
         args[2] = input->argv2[2];
         args[3] = (char *)NULL;
-        exit(0);
         execvp(path, args);
     }
 }
@@ -136,6 +135,7 @@ int check_asc(char* read_buf){
     int result = 1;
     for(i = 0; i < size; i++){
         if(read_buf[i] - '0' > 127){
+            printf("char %d\n", read_buf[i] - '0');
             result = 0;
         }
     }
