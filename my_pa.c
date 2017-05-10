@@ -183,7 +183,7 @@ int write_to_file(struct value_st *input, char* read_buf, int index, char* cmd){
         strcat(write_buf, "BINARY data");  
     }
 
-    int file_fd = open("pa.log", O_WRONLY | O_APPEND);
+    int file_fd = open("pa.log", O_CREAT | O_WRONLY | O_APPEND);
     if (file_fd < 0) {
         write(2, "file_fd is less than 0\n", 24);
         exit(-1);
