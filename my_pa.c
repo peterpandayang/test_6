@@ -169,7 +169,8 @@ int write_to_file(struct value_st *input, char* read_buf, int index, char* cmd){
 
     print_buf(read_buf);
 
-    bytes = strlen(read_buf);
+    // bytes = read(fds[0], &read_buf[i], 1);
+    // bytes = strlen(read_buf);
     // write(2, &bytes, 2);
     // write(2, &bytes, 2);
     bytes_str = itoa(bytes);
@@ -339,7 +340,9 @@ int do_with_one_pipe(struct value_st *input){
     dup(pipe_m1_p[0]);
     close(pipe_m1_p[0]);
 
-    if(read(0, read_buf, 64) < 0) {
+    int byte = read(0, read_buf, buf_size);
+    printf("bytes: %d\n", byte);
+    if(read(0, read_buf, buf_size) < 0) {
         write(2, "cannot read from pipe\n", 23);
         exit(-1);
     }
