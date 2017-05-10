@@ -264,10 +264,10 @@ int do_with_one_pipe(struct value_st *input){
         close(pipe_1_m1[1]);
         close(0);
         dup(pipe_1_m1[0]);
-        // int bytes;
-        // int lines;
+        int bytes;
+        int lines;
         // printf("line is: %d\n", lines);
-        if(read(0, read_buf, 64) < 0) {
+        if(bytes = read(0, read_buf, 64) < 0) {
             write(2, "cannot read from pipe\n", 23);
             exit(-1);
         }
@@ -328,7 +328,6 @@ int do_with_one_pipe(struct value_st *input){
 
     // int byte = read(0, read_buf, 64);
     // printf("byte is: %d\n", byte);
-    memset(read_buf, 0, sizeof(read_buf));
     if(read(0, read_buf, 64) < 0) {
         write(2, "cannot read from pipe\n", 23);
         exit(-1);
