@@ -168,8 +168,10 @@ int write_to_file(struct value_st *input, char* read_buf, int index, char* cmd){
     print_buf(read_buf);
 
     bytes = strnlen(read_buf, 64);
-    write(2, &bytes, 1);
+    // write(2, &bytes, 1);
     bytes_str = itoa(bytes);
+    write(2, bytes_str, 2);
+    write(2, bytes_str, 2);
     lines = count_lines(read_buf, bytes);
     lines_str = itoa(lines);
     is_asc = check_asc(read_buf);
