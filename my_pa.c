@@ -278,7 +278,7 @@ int do_with_one_pipe(struct value_st *input){
             write(2, "cannot read from pipe\n", 23);
             exit(-1);
         }
-
+        printf("buf is: %s\n", read_buf);
         close(1);
         dup(pipe_m1_p[1]);
         close(pipe_m1_p[1]);
