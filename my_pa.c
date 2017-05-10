@@ -199,6 +199,7 @@ int write_to_file(struct value_st *input, char* read_buf, int index, char* cmd){
 int do_without_pipe(struct value_st *input){
     pid_t id;
     int pipe1[2];
+    char read_buf[64];
 
     pipe(pipe1);
     id = fork();
@@ -227,8 +228,8 @@ int do_with_one_pipe(struct value_st *input){
     int pipe_1_m1[2];
     int pipe_m1_p[2];
     int pipe_m1_2[2];
-    char* read_buf[64];
-    // char read_buf_c2[64];
+    char read_buf[64];
+    char read_buf_c2[64];
 
     pipe(pipe_1_m1);
     pipe(pipe_m1_p);
@@ -261,7 +262,7 @@ int do_with_one_pipe(struct value_st *input){
         close(pipe_1_m1[1]);
         close(0);
         dup(pipe_1_m1[0]);
-        if(read(0, read_buf, buf_size) < 0) {
+        if(read(0, read_buf, 64) < 0) {
             write(2, "cannot read from pipe\n", 23);
             exit(-1);
         }
@@ -319,11 +320,11 @@ int do_with_one_pipe(struct value_st *input){
     dup(pipe_m1_p[0]);
     close(pipe_m1_p[0]);
 
-    if(read(0, read_buf, buf_size) < 0) {
+    if(read(0, read_buf, 64) < 0) {
         write(2, "cannot read from pipe\n", 23);
         exit(-1);
     }
-    write_to_file(input, read_buf, 1, input->argv2[0]);
+    write_to_file(input, &read_buf, 1, input->argv2[0]);
 
     return 0;
 }
