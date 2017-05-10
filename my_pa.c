@@ -104,7 +104,7 @@ int exec_process_2(struct value_st *input){
 int count_lines(char* read_buf, int len){
     int i = 0;
     int counter = 0;
-    while(i < len - 2){
+    while(i < len - 1){
         if(read_buf[i] == '\n'){
             counter += 1;
         }
@@ -228,8 +228,8 @@ int do_with_one_pipe(struct value_st *input){
     int pipe_1_m1[2];
     int pipe_m1_p[2];
     int pipe_m1_2[2];
-    char read_buf[64];
-    char read_buf_c2[64];
+    char* read_buf;
+    // char read_buf_c2[64];
 
     pipe(pipe_1_m1);
     pipe(pipe_m1_p);
