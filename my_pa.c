@@ -302,6 +302,7 @@ int do_with_one_pipe(struct value_st *input){
         exit(-1);
     }
     if (id == 0) {
+        sleep(1);
         close(pipe_m1_2[1]);
         close(0);
         dup(pipe_m1_2[0]);
