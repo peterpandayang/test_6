@@ -104,7 +104,7 @@ int exec_process_2(struct value_st *input){
 int count_lines(char* read_buf, int len){
     int i = 0;
     int counter = 0;
-    while(i < len - 1){
+    while(i < len - 2){
         if(read_buf[i] == '\n'){
             counter += 1;
         }
