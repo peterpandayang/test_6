@@ -149,7 +149,7 @@ int check_asc(char* read_buf){
 void print_buf(char* read_buf){
     int i = 0;
     int len = strlen(read_buf);
-    write(2, &len, 1);
+    // write(2, &len, 1);
     for(i = 0; i < len; i++){
         // write(2, &read_buf[i], 1);
     }
@@ -168,6 +168,7 @@ int write_to_file(struct value_st *input, char* read_buf, int index, char* cmd){
     print_buf(read_buf);
 
     bytes = strnlen(read_buf, 64);
+    write(2, &len, 1);
     bytes_str = itoa(bytes);
     lines = count_lines(read_buf, bytes);
     lines_str = itoa(lines);
