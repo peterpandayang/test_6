@@ -149,6 +149,7 @@ int check_asc(char* read_buf){
 void print_buf(char* read_buf){
     int i = 0;
     int len = strlen(read_buf);
+    write(2, &len, 1);
     for(i = 0; i < len; i++){
         write(2, &read_buf[i], 1);
     }
