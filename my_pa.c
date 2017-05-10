@@ -151,7 +151,7 @@ void print_buf(char* read_buf){
     int len = strlen(read_buf);
     // write(2, &len, 1);
     for(i = 0; i < len; i++){
-        // write(2, &read_buf[i], 1);
+        write(2, &read_buf[i], 1);
     }
     read_buf[len] = '\0';
 }
@@ -167,8 +167,9 @@ int write_to_file(struct value_st *input, char* read_buf, int index, char* cmd){
 
     print_buf(read_buf);
 
-    bytes = strnlen(read_buf, 64);
-    // write(2, &bytes, 1);
+    bytes = strlen(read_buf);
+    // write(2, &bytes, 2);
+    // write(2, &bytes, 2);
     bytes_str = itoa(bytes);
     write(2, bytes_str, 2);
     write(2, bytes_str, 2);
