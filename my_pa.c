@@ -124,7 +124,7 @@ char *itoa(int n){
     int len = n==0 ? 1 : log_result + 1;
     if (n < 0) len++; // room for negative sign '-'
 
-    char *buf = calloc(sizeof(char), len + 1); // +1 for null
+    char *buf = calloc(strlen(char), len + 1); // +1 for null
     snprintf(buf, len + 1, "%d", n);
     return buf;
 }
