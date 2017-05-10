@@ -261,7 +261,7 @@ int do_with_one_pipe(struct value_st *input){
         close(pipe_1_m1[1]);
         close(0);
         dup(pipe_1_m1[0]);
-        if(read(0, read_buf, strlen(read_buf)) < 0) {
+        if(read(0, read_buf, buf_size) < 0) {
             write(2, "cannot read from pipe\n", 23);
             exit(-1);
         }
