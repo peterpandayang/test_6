@@ -199,7 +199,6 @@ int write_to_file(struct value_st *input, char* read_buf, int index, char* cmd){
 int do_without_pipe(struct value_st *input){
     pid_t id;
     int pipe1[2];
-    char read_buf[64];
 
     pipe(pipe1);
     id = fork();
@@ -320,7 +319,7 @@ int do_with_one_pipe(struct value_st *input){
     dup(pipe_m1_p[0]);
     close(pipe_m1_p[0]);
 
-    if(read(0, read_buf, 64) < 0) {
+    if(read(0, read_buf, strlen(read_buf)) < 0) {
         write(2, "cannot read from pipe\n", 23);
         exit(-1);
     }
