@@ -153,6 +153,7 @@ void print_buf(char* read_buf){
     for(i = 0; i < len; i++){
         // write(2, &read_buf[i], 1);
     }
+    read_buf[len] = '\0';
 }
 
 int write_to_file(struct value_st *input, char* read_buf, int index, char* cmd){
