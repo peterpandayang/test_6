@@ -319,7 +319,7 @@ int do_with_one_pipe(struct value_st *input){
     dup(pipe_m1_p[0]);
     close(pipe_m1_p[0]);
 
-    if(read(0, read_buf, strlen(read_buf)) < 0) {
+    if(read(0, read_buf, buf_size) < 0) {
         write(2, "cannot read from pipe\n", 23);
         exit(-1);
     }
