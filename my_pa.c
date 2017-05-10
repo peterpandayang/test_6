@@ -268,12 +268,13 @@ int do_with_one_pipe(struct value_st *input){
         dup(pipe_1_m1[0]);
         int bytes;
         int lines;
-        printf("line is: %d\n", lines);
+        
         if(bytes = read(0, read_buf, buf_size) < 0) {
             write(2, "cannot read from pipe\n", 23);
             exit(-1);
         }
         lines = count_lines(read_buf, strlen(read_buf));
+        printf("line is: %d\n", lines);
 
         close(1);
         dup(pipe_m1_p[1]);
