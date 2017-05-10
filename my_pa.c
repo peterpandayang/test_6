@@ -148,26 +148,26 @@ int write_to_file(struct value_st *input, char* read_buf, int index, char* cmd){
     is_asc = check_asc(read_buf);
     index_str = itoa(index);
 
-    strcat(&write_buf, "[");
-    strcat(&write_buf, index_str);
-    strcat(&write_buf, "] ");
-    strcat(&write_buf, input->argv1[0]);
-    strcat(&write_buf, " -> ");
+    strcat(write_buf, "[");
+    strcat(write_buf, index_str);
+    strcat(write_buf, "] ");
+    strcat(write_buf, input->argv1[0]);
+    strcat(write_buf, " -> ");
     if(cmd){
-        strcat(&write_buf, cmd);
+        strcat(write_buf, cmd);
     }
-    strcat(&write_buf, "\n");
-    strcat(&write_buf, bytes_str);
-    strcat(&write_buf, " bytes");
-    strcat(&write_buf, "\n");
-    strcat(&write_buf, lines_str);
-    strcat(&write_buf, " lines");
-    strcat(&write_buf, "\n");  
+    strcat(write_buf, "\n");
+    strcat(write_buf, bytes_str);
+    strcat(write_buf, " bytes");
+    strcat(write_buf, "\n");
+    strcat(write_buf, lines_str);
+    strcat(write_buf, " lines");
+    strcat(write_buf, "\n");  
     if(is_asc == 1){
-        strcat(&write_buf, "ASCII data");  
+        strcat(write_buf, "ASCII data");  
     }
     else{
-        strcat(&write_buf, "BINARY data");  
+        strcat(write_buf, "BINARY data");  
     }
 
     int file_fd = open("pa.log", O_WRONLY | O_APPEND);
