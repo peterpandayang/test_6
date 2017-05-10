@@ -135,7 +135,7 @@ int check_asc(char* read_buf){
     return result;
 }
 
-int write_to_file(struct value_st *input, char*[64] read_buf, int index, char* cmd){
+int write_to_file(struct value_st *input, char* read_buf, int index, char* cmd){
     int bytes, lines;
     char* bytes_str;
     char* lines_str;
