@@ -153,8 +153,14 @@ int write_to_file(struct value_st *input, char* read_buf, int index, char* cmd){
     char* index_str;
     char write_buf[1024];
     int is_asc = 0;
+    // int fds[2];
 
-    bytes = strlen(read_buf);
+    bytes = strnlen(read_buf, 64);
+    // while (read(fds[0], read_buf, 1) > 0) {
+    //     bytes += 1;
+    //     read_buf += 1;
+    // }
+    // bytes = read(fds[0], read_buf, buf_size);
     bytes_str = itoa(bytes);
     lines = count_lines(read_buf, bytes);
     lines_str = itoa(lines);
