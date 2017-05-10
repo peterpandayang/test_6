@@ -210,25 +210,16 @@ int do_without_pipe(struct value_st *input){
     }
     if (id == 0) {
         close(pipe1[0]);
-        close(1);
-        dup(pipe1[1]);
         close(pipe1[1]);
         if (exec_process_1(input) < 0) {
             write(2, "execlp() failed for prog1\n", 27);
             exit(-1);
         }
     }
+    close(pipe1[0]);
     close(pipe1[1]);
     
     id = wait(NULL);
-
-    close(0);
-    dup(pipe1[0]);
-    if(read(0, read_buf, 64) < 0) {
-        write(2, "cannot read from pipe\n", 23);
-        exit(-1);
-    }
-    write_to_file(input, &read_buf, 0, (char *)NULL);
     return 0;
 }
 
