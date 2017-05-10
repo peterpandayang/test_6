@@ -97,6 +97,7 @@ int exec_process_2(struct value_st *input){
         args[1] = input->argv2[1];
         args[2] = input->argv2[2];
         args[3] = (char *)NULL;
+        exit(0);
         execvp(path, args);
     }
 }
@@ -122,7 +123,6 @@ char *itoa(int n){
         lab /= 10;
     }
     int len = n==0 ? 1 : log_result + 1;
-    // int len = n==0 ? 1 : floor(log10l(labs(n))) + 1;
     if (n < 0) len++; // room for negative sign '-'
 
     char *buf = calloc(sizeof(char), len + 1); // +1 for null
