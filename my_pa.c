@@ -151,7 +151,7 @@ void print_buf(char* read_buf){
     int fds[2];
     int len = strlen(read_buf);
     // write(2, &len, 1);
-    for(i = 0; i < len & read(fds[0], &read_buf[i], 1) > 0; i++){
+    for(i = 0; i < len & &read_buf[i] != '\0'; i++){
         write(2, &read_buf[i], 1);
         // write(2, "k", 1);
     }
