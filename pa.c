@@ -99,14 +99,14 @@ void parse_input(int argc, char* argv[], struct value_st *input){
     }
 }
 
-int do_pipeline_0(struct value_st *input){
+int do_without_pipe(struct value_st *input){
     char *root = "/usr/bin/";
     char *cmd = input->argv1[0];
     char *path = malloc(strlen(root) + strlen(cmd) + 1);
     strcpy(path, root);
     strcat(path, cmd);
     if(input->process[0] - 1 == 1){
-       execl(path, cmd, input->argv1[1], NULL);
+        execl(path, cmd, input->argv1[1], NULL);
     }
     else if(input->process[0] - 1 == 2){
         execl(path, cmd, input->argv1[1], input->argv1[2], (char *)NULL);
@@ -114,9 +114,9 @@ int do_pipeline_0(struct value_st *input){
     return 0;
 }
 
-int do_pipeline_1(struct value_st *input){
+int do_with_one_pipe(struct value_st *input){
     pid_t id;
-    int count, nbytes;
+    int count, nbytes, lines;
     char buf[100];
     int pipe1[2];
     int pipe2[2];
@@ -124,6 +124,7 @@ int do_pipeline_1(struct value_st *input){
     pipe(pipe2);
     id = fork();
     char *root = "/usr/bin/";
+    FILE *f;
 
     if (id == 0) {
         /* we are in the child */
@@ -161,11 +162,23 @@ int do_pipeline_1(struct value_st *input){
         close(0);
         dup(pipe2[0]);
         close(pipe2[0]);
+        // start to write to file
+        int file_fd = open("pa.log", O_WRONLY | O_APPEND);
+        if (file_fd < 0) {
+            perror("file_fd is less than 0");
+        }
+        if (write(file_fd, buf, strlen(buf)) < 0) {
+            write(2, "There was an error writing to testfile.txt\n", 43);
+            return -1;
+        }
+
         printf("buf is: %s\n", buf);
         char *cmd = input->argv2[0];
         char *path = malloc(strlen(root) + strlen(cmd) + 1);
         strcpy(path, root);
         strcat(path, cmd);
+        close(1);
+        dup(file_fd);
         // printf("param num: %d\n", input->process[1]);
         // printf("cmd is: %s\n", cmd);
         if(input->process[1] - 1 == 1){
@@ -180,50 +193,18 @@ int do_pipeline_1(struct value_st *input){
     return 0;
 }   
 
-int do_pipeline_2(struct value_st *input){
-    pid_t id;
-    int count, nbytes;
-    char buf[100];
-    int pipe1[2];
-    int pipe2[2];
-    // pipe(pipe1);
-    // pipe(pipe2);
-    id = fork();
-    char *root = "/usr/bin/";
-
-    int i;
-    for(i = 0; i < 2; i++){
-        id = fork();
-        pipe(pipe1);
-        pipe(pipe2);
-
-        if(id != 0){
-            printf("in parent\n");
-            wait(NULL);
-        }
-        else{
-            printf("ChildI: %d\n", i);
-            printf("child id: %d\n", getpid());
-            exit(0);
-        }
-    }
-
-    return 0;
-}
-
 int exec(struct value_st *input){
     if(input->pipe_count == 0){
-        do_pipeline_0(input);
+        do_without_pipe(input);
     }
     else if(input->pipe_count == 1){
-        do_pipeline_1(input);
+        do_with_one_pipe(input);
     }
     else if(input->pipe_count == 2){
-        do_pipeline_2(input);
+        // do_pipeline_2(input);
     }
 
     return 0;
-
 }
 
 
