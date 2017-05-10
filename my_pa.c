@@ -131,7 +131,6 @@ char *itoa(int n){
 
 int check_asc(char* read_buf){
     int size = strlen(read_buf);
-    printf("buf size is: %d\n", size);
     int i = 0;
     int result = 1;
     for(i = 0; i < size; i++){
@@ -321,6 +320,7 @@ int do_with_one_pipe(struct value_st *input){
     close(pipe_m1_2[0]);
     close(pipe_m1_2[1]);
 
+    id = wait(NULL);
     id = wait(NULL);
     id = wait(NULL);
 
