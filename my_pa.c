@@ -113,7 +113,7 @@ int count_lines(char* read_buf, int len){
     return counter + 1;
 }
 
-// refered from: http://stackoverflow.com/questions/190229/where-is-the-itoa-function-in-linux
+// refer: http://stackoverflow.com/questions/190229/where-is-the-itoa-function-in-linux
 char *itoa(int n){
     int lab = labs(n);
     int log_result = 0;
@@ -124,7 +124,7 @@ char *itoa(int n){
     int len = n==0 ? 1 : log_result + 1;
     if (n < 0) len++; // room for negative sign '-'
 
-    char *buf = calloc(strlen(char), len + 1); // +1 for null
+    char *buf = calloc(sizeof(char), len + 1); // +1 for null
     snprintf(buf, len + 1, "%d", n);
     return buf;
 }
