@@ -267,10 +267,11 @@ int do_with_one_pipe(struct value_st *input){
         int bytes;
         int lines;
         // printf("line is: %d\n", lines);
-        if(bytes = read(0, read_buf, 64) < 0) {
+        if((bytes = read(0, read_buf, buf_size)) < 0) {
             write(2, "cannot read from pipe\n", 23);
             exit(-1);
         }
+        printf("bytes is: %s\n", bytes);
         // lines = count_lines(read_buf, strlen(read_buf));
 
         close(1);
