@@ -134,7 +134,10 @@ int check_asc(char* read_buf){
     int i = 0;
     int result = 1;
     for(i = 0; i < size; i++){
-        if(read_buf[i] - '0' > 127 && read_buf[i] != '?'){
+        if(read_buf[i] == '\0'){
+            break;
+        }
+        if(read_buf[i] - '0' > 127){
             printf("char: %d\n", read_buf[i] - '0');
             printf("char: %c\n", read_buf[i]);
             result = 0;
