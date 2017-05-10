@@ -266,7 +266,7 @@ int do_with_one_pipe(struct value_st *input){
         close(pipe_1_m1[1]);
         close(0);
         dup(pipe_1_m1[0]);
-        int byte;
+        int bytes;
         int lines;
         printf("line is: %d\n", lines);
         if(bytes = read(0, read_buf, 64) < 0) {
