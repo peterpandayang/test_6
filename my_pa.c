@@ -278,6 +278,8 @@ int do_with_one_pipe(struct value_st *input){
         close(pipe_1_m1[1]);
         close(0);
         dup(pipe_1_m1[0]);
+         int byte = read(0, read_buf, 64);
+    printf("byte is: %d\n", byte);
         if(read(0, read_buf, 64) < 0) {
             write(2, "cannot read from pipe\n", 23);
             exit(-1);
@@ -336,8 +338,8 @@ int do_with_one_pipe(struct value_st *input){
     dup(pipe_m1_p[0]);
     close(pipe_m1_p[0]);
 
-    int byte = read(0, read_buf, 64);
-    printf("byte is: %d\n", byte);
+    // int byte = read(0, read_buf, 64);
+    // printf("byte is: %d\n", byte);
     if(read(0, read_buf, 64) < 0) {
         write(2, "cannot read from pipe\n", 23);
         exit(-1);
