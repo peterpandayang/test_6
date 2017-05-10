@@ -328,6 +328,7 @@ int do_with_one_pipe(struct value_st *input){
 
     // int byte = read(0, read_buf, 64);
     // printf("byte is: %d\n", byte);
+    memset(read_buf, 0, sizeof(char)) * buf_size;
     if(read(0, read_buf, 64) < 0) {
         write(2, "cannot read from pipe\n", 23);
         exit(-1);
