@@ -3,14 +3,14 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <string.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <unistd.h>
 
 
 #define process_count 3
-#define param_count 3
+#define param_count 16
 #define buf_size 64
 
 struct value_st{
@@ -28,6 +28,10 @@ void parse_input(int argc, char* argv[], struct value_st *input){
         if(strcmp(argv[i], "|") == 0){
             input->pipe_count += 1;
         }
+    }
+    if(input->count == 2){
+        printf("does not support more than 2 pipes\n");
+        exit(0);
     }
 
     int fast = 1;
