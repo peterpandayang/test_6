@@ -165,13 +165,19 @@ int write_to_file(struct value_st *input, char* read_buf, int index, char* cmd, 
     fprintf(f, "%d bytes\n", bytes);
     fprintf(f, "%d lines\n", lines);
 
-    fclose(f);
+    
     // char* bytes_str;
     // char* lines_str;
     // char* index_str;
     // char write_buf[1024];
-    // int is_asc = 0;
-
+    int is_asc = 0;
+    is_asc = check_asc(read_buf);
+    if(is_asc == 1){
+        fprintf(f, "ASCII data\n");
+    }
+    else{
+        fprintf(f, "Binary data\n");
+    }
     // bytes = strlen(read_buf);
     // bytes_str = itoa(bytes);
     // lines = count_lines(read_buf, bytes);
@@ -216,6 +222,7 @@ int write_to_file(struct value_st *input, char* read_buf, int index, char* cmd, 
     //     write(2, "There was an error writing to pa.log.txt\n", 43);
     //     exit(-1);
     // }
+    fclose(f);
 
     return 0;
 }
