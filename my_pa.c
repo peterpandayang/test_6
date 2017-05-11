@@ -101,33 +101,6 @@ int exec_process_2(struct value_st *input){
     }
 }
 
-int count_lines(char* read_buf, int len){
-    int i = 0;
-    int counter = 0;
-    while(i < len - 1){
-        if(read_buf[i] == '\n'){
-            counter += 1;
-        }
-        i++;
-    }
-    return counter + 1;
-}
-
-int check_asc(char* read_buf){
-    int size = strlen(read_buf);
-    int i = 0;
-    int result = 1;
-    for(i = 0; i < size; i++){
-        if(read_buf[i] == '\0'){
-            break;
-        }
-        if(read_buf[i] - '0' > 127){
-            result = 0;
-        }
-    }
-    return result;
-}
-
 int write_to_file(struct value_st *input, char* read_buf, int index, char* cmd){
     int bytes;
     int lines;
@@ -259,16 +232,12 @@ int do_with_one_pipe(struct value_st *input){
     id = wait(NULL);
     id = wait(NULL);
     id = wait(NULL);
+
     close(pipe_m1_p[1]);
     close(0);
     dup(pipe_m1_p[0]);
     close(pipe_m1_p[0]);
     memset(read_buf, 0, buf_size);
-    // if(read(0, read_buf, buf_size) < 0) {
-    //     write(2, "cannot read from pipe\n", 23);
-    //     exit(-1);
-    // }
-    // write_to_file(input, &read_buf, 1, input->argv2[0]);
     char buf[32];
     int i = 0;
     int bytes = 0;
@@ -284,7 +253,6 @@ int do_with_one_pipe(struct value_st *input){
         }
         i += 1;
     }
-
     FILE *f = fopen("pa.log", "w");
 
     if (f == NULL){
@@ -301,7 +269,6 @@ int do_with_one_pipe(struct value_st *input){
         fprintf(f, "Binary data\n");
     }
     fclose(f);
-    // write_to_file(input, &read_buf, 1, input->argv2[0]);
     return 0;
 }
 
