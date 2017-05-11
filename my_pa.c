@@ -146,53 +146,77 @@ int check_asc(char* read_buf){
     return result;
 }
 
-int write_to_file(struct value_st *input, char* read_buf, int index, char* cmd, int bytes){
-    // int bytes;
+int write_to_file(struct value_st *input, char* read_buf, int index, char* cmd){
+    int bytes;
     int lines;
-    char* bytes_str;
-    char* lines_str;
-    char* index_str;
-    char write_buf[1024];
-    int is_asc = 0;
-
     bytes = strlen(read_buf);
-    bytes_str = itoa(bytes);
     lines = count_lines(read_buf, bytes);
-    lines_str = itoa(lines);
-    is_asc = check_asc(read_buf);
-    index_str = itoa(index);
 
-    strcat(write_buf, "[");
-    strcat(write_buf, index_str);
-    strcat(write_buf, "] ");
-    strcat(write_buf, input->argv1[0]);
-    strcat(write_buf, " -> ");
-    if(cmd){
-        strcat(write_buf, cmd);
-    }
-    strcat(write_buf, "\n");
-    strcat(write_buf, bytes_str);
-    strcat(write_buf, " bytes");
-    strcat(write_buf, "\n");
-    strcat(write_buf, lines_str);
-    strcat(write_buf, " lines");
-    strcat(write_buf, "\n");  
-    if(is_asc == 1){
-        strcat(write_buf, "ASCII data");  
-    }
-    else{
-        strcat(write_buf, "BINARY data");  
+    FILE *f = fopen("pa.log", "w");
+    if (f == NULL)
+    {
+        printf("Error opening file!\n");
+        exit(1);
     }
 
-    int file_fd = open("pa.log", O_CREAT | O_WRONLY | O_APPEND);
-    if (file_fd < 0) {
-        write(2, "file_fd is less than 0\n", 24);
-        exit(-1);
-    }
-    if (write(file_fd, write_buf, strlen(write_buf)) < 0) {
-        write(2, "There was an error writing to pa.log.txt\n", 43);
-        exit(-1);
-    }
+    fprintf(f, "[1] %s -> %s\n", input->argv1[0], cmd);
+    fprintf(f, "%d bytes\n", bytes);
+    fprintf(f, "%d lines\n", lines);
+
+    /* print integers and floats */
+    int i = 1;
+    float py = 3.1415927;
+    fprintf(f, "Integer: %d, float: %f\n", i, py);
+
+    /* printing single chatacters */
+    char c = 'A';
+    fprintf(f, "A character: %c\n", c);
+
+    fclose(f);
+    // char* bytes_str;
+    // char* lines_str;
+    // char* index_str;
+    // char write_buf[1024];
+    // int is_asc = 0;
+
+    // bytes = strlen(read_buf);
+    // bytes_str = itoa(bytes);
+    // lines = count_lines(read_buf, bytes);
+    // lines_str = itoa(lines);
+    // is_asc = check_asc(read_buf);
+    // index_str = itoa(index);
+
+    // strcat(write_buf, "[");
+    // strcat(write_buf, index_str);
+    // strcat(write_buf, "] ");
+    // strcat(write_buf, input->argv1[0]);
+    // strcat(write_buf, " -> ");
+    // if(cmd){
+    //     strcat(write_buf, cmd);
+    // }
+    // strcat(write_buf, "\n");
+    // strcat(write_buf, bytes_str);
+    // strcat(write_buf, " bytes");
+    // strcat(write_buf, "\n");
+    // strcat(write_buf, lines_str);
+    // strcat(write_buf, " lines");
+    // strcat(write_buf, "\n");  
+    // if(is_asc == 1){
+    //     strcat(write_buf, "ASCII data");  
+    // }
+    // else{
+    //     strcat(write_buf, "BINARY data");  
+    // }
+
+    // int file_fd = open("pa.log", O_CREAT | O_WRONLY | O_APPEND);
+    // if (file_fd < 0) {
+    //     write(2, "file_fd is less than 0\n", 24);
+    //     exit(-1);
+    // }
+    // if (write(file_fd, write_buf, strlen(write_buf)) < 0) {
+    //     write(2, "There was an error writing to pa.log.txt\n", 43);
+    //     exit(-1);
+    // }
 
     return 0;
 }
@@ -263,13 +287,13 @@ int do_with_one_pipe(struct value_st *input){
         close(pipe_1_m1[1]);
         close(0);
         dup(pipe_1_m1[0]);
-        int bytes = 0;
-        if((bytes = read(0, read_buf, buf_size)) < 0) {
+        // int bytes = 0;
+        if(read(0, read_buf, buf_size) < 0) {
             write(2, "cannot read from pipe\n", 23);
             exit(-1);
         }
-        printf("bytes is: %d\n", bytes);
-        write_to_file(input, &read_buf, 1, input->argv2[0], bytes);
+        // printf("bytes is: %d\n", bytes);
+        write_to_file(input, &read_buf, 1, input->argv2[0]);
 
         close(1);
         dup(pipe_m1_p[1]);
