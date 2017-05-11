@@ -147,10 +147,12 @@ int check_asc(char* read_buf){
 }
 
 int write_to_file(struct value_st *input, char* read_buf, int index, char* cmd, int bytes){
-    // int bytes;
+    int bytes;
     int lines;
+    int is_asc = 0;
+    is_asc = check_asc(read_buf);
 
-    // bytes = strlen(read_buf);
+    bytes = strlen(read_buf);
     lines = count_lines(read_buf, bytes);
 
     FILE *f = fopen("pa.log", "w");
@@ -161,67 +163,15 @@ int write_to_file(struct value_st *input, char* read_buf, int index, char* cmd, 
     }
 
     fprintf(f, "[1] %s -> %s\n", input->argv1[0], cmd);
-    // printf("bytes is: %s\n", bytes);
     fprintf(f, "%d bytes\n", bytes);
     fprintf(f, "%d lines\n", lines);
-
-    
-    // char* bytes_str;
-    // char* lines_str;
-    // char* index_str;
-    // char write_buf[1024];
-    int is_asc = 0;
-    is_asc = check_asc(read_buf);
     if(is_asc == 1){
         fprintf(f, "ASCII data\n");
     }
     else{
         fprintf(f, "Binary data\n");
     }
-    // bytes = strlen(read_buf);
-    // bytes_str = itoa(bytes);
-    // lines = count_lines(read_buf, bytes);
-    // lines_str = itoa(lines);
-    // is_asc = check_asc(read_buf);
-    // index_str = itoa(index);
 
-    // strcat(write_buf, "[");
-    // strcat(write_buf, index_str);
-    // strcat(write_buf, "] ");
-    // strcat(write_buf, input->argv1[0]);
-    // strcat(write_buf, " -> ");
-    // if(cmd){
-    //     strcat(write_buf, cmd);
-    // }
-    // strcat(write_buf, "\n");
-    // strcat(write_buf, bytes_str);
-    // strcat(write_buf, " bytes");
-    // strcat(write_buf, "\n");
-    // strcat(write_buf, lines_str);
-    // strcat(write_buf, " lines");
-    // strcat(write_buf, "\n");  
-    // if(is_asc == 1){
-    //     strcat(write_buf, "ASCII data");  
-    // }
-    // else{
-    //     strcat(write_buf, "BINARY data");  
-    // }
-
-    // int file_fd = open("pa.log", O_CREAT | O_WRONLY | O_APPEND);
-    // if (file_fd < 0) {
-    //     write(2, "file_fd is less than 0\n", 24);
-    //     exit(-1);
-    // }
-    // close(1);
-    // dup(file_fd);
-    // printf("[1] %s -> %s\n", input->argv1[0], cmd);
-    // printf("bytes is: %s\n", bytes);
-    // printf("%d bytes\n", bytes);
-    // printf("%d lines\n", lines);
-    // if (write(file_fd, write_buf, strlen(write_buf)) < 0) {
-    //     write(2, "There was an error writing to pa.log.txt\n", 43);
-    //     exit(-1);
-    // }
     fclose(f);
 
     return 0;
@@ -372,7 +322,6 @@ int exec(struct value_st *input){
         do_with_one_pipe(input);
     }
     else if(input->pipe_count >= 2){
-        // do_pipeline_2(input);
         printf("does not support more than 2 pipes\n");
     }
 
