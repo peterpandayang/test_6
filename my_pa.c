@@ -28,7 +28,7 @@ void parse_input(int argc, char* argv[], struct value_st *input){
             input->pipe_count += 1;
         }
     }
-    if(input->count >= 2){
+    if(input->pipe_count >= 2){
         printf("does not support more than 2 pipes\n");
         exit(0);
     }
