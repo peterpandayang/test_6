@@ -160,6 +160,7 @@ int write_to_file(struct value_st *input, char* read_buf, int index, char* cmd){
     }
 
     fprintf(f, "[1] %s -> %s\n", input->argv1[0], cmd);
+    printf("bytes is: %s\n", bytes);
     fprintf(f, "%d bytes\n", bytes);
     fprintf(f, "%d lines\n", lines);
 
