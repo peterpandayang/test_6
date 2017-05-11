@@ -247,6 +247,7 @@ int do_without_pipe(struct value_st *input){
             exit(-1);
         }
     }
+    
     close(pipe1[0]);
     close(pipe1[1]);
     
