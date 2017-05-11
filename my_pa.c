@@ -276,10 +276,10 @@ int do_with_one_pipe(struct value_st *input){
     int is_asc = 1;
     while(read(0, &buf[i], 1) > 0) {
         bytes += 1;
-        if(&buf[i] == '\n'){
+        if(buf[i] == '\n'){
             lines += 1;
         }
-        if(&buf[i] - '0' > 127){
+        if(buf[i] - '0' > 127){
             is_asc = 0;
         }
         i += 1;
@@ -291,7 +291,7 @@ int do_with_one_pipe(struct value_st *input){
         printf("Error opening file!\n");
         exit(1);
     }
-    fprintf(f, "[1] %s -> %s\n", input->argv1[0], cmd);
+    fprintf(f, "[1] %s -> %s\n", input->argv1[0], input->argv2[0]);
     fprintf(f, "%d bytes\n", bytes);
     fprintf(f, "%d lines\n", lines);
     if(is_asc == 1){
