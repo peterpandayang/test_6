@@ -285,13 +285,12 @@ int do_with_one_pipe(struct value_st *input){
             exit(-1);
         }
         printf("bytes is: %d\n", bytes);
-        write_to_file(input, &read_buf, 1, input->argv2[0], bytes);
 
         close(1);
         dup(pipe_m1_p[1]);
         close(pipe_m1_p[1]);
 
-        if (write(1, read_buf, strlen(read_buf)) < 0) {
+        if (write(1, read_buf, strlen(read_buf) - 1) < 0) {
            write(2, "cannot write to pipe\n", 21);
         }
 
@@ -299,7 +298,7 @@ int do_with_one_pipe(struct value_st *input){
         dup(pipe_m1_2[1]);
         close(pipe_m1_2[1]);
 
-        if (write(1, read_buf, strlen(read_buf)) < 0) {
+        if (write(1, read_buf, strlen(read_buf) - 1) < 0) {
            write(2, "cannot write to pipe\n", 21);
         }
 
