@@ -294,14 +294,11 @@ int do_with_one_pipe(struct value_st *input){
         close(pipe_1_m1[1]);
         close(0);
         dup(pipe_1_m1[0]);
-        int bytes = 0;
         memset(read_buf, 0, buf_size);
-        if((bytes = read(0, read_buf, buf_size)) < 0) {
+        if(read(0, read_buf, buf_size) < 0) {
             write(2, "cannot read from pipe\n", 23);
             exit(-1);
         }
-        // printf("bytes is: %d\n", bytes);
-        // write_to_file(input, &read_buf, 1, input->argv2[0], bytes);
 
         close(1);
         dup(pipe_m1_p[1]);
