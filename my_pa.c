@@ -296,7 +296,6 @@ int do_with_one_pipe(struct value_st *input){
 }
 
 int exec(struct value_st *input){
-    printf("pipe count is: %d\n", input->pipe_count);
     if(input->pipe_count == 0){
         do_without_pipe(input);
     }
