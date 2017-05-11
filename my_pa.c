@@ -162,7 +162,7 @@ int write_to_file(struct value_st *input, char* read_buf, int index, char* cmd){
 int do_without_pipe(struct value_st *input){
     pid_t id;
     int pipe1[2];
-    char read_buf[64];
+    char read_buf[buf_size];
 
     pipe(pipe1);
     id = fork();
@@ -191,8 +191,7 @@ int do_with_one_pipe(struct value_st *input){
     int pipe_1_m1[2];
     int pipe_m1_p[2];
     int pipe_m1_2[2];
-    char read_buf[64];
-    char read_buf_c2[64];
+    char read_buf[buf_size];
 
     pipe(pipe_1_m1);
     pipe(pipe_m1_p);
@@ -286,7 +285,7 @@ int do_with_one_pipe(struct value_st *input){
     close(pipe_m1_p[0]);
 
     memset(read_buf, 0, buf_size);
-    if(read(0, read_buf, 64) < 0) {
+    if(read(0, read_buf, buf_size) < 0) {
         write(2, "cannot read from pipe\n", 23);
         exit(-1);
     }
@@ -310,15 +309,11 @@ int exec(struct value_st *input){
 }
 
 int main(int argc, char* argv[]) {
-
     struct value_st input;
     input.pipe_count = 0;
-
     // support up to 1 pipelines and up to 2 parameters
     parse_input(argc, argv, &input);
-
     // execute the program
     exec(&input);
-
 }
 
