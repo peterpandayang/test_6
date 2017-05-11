@@ -272,6 +272,7 @@ int do_with_one_pipe(struct value_st *input){
             write(2, "execlp() failed for prog1\n", 27);
             exit(-1);
         }
+        exit(0);
     }
 
     // entering m1
@@ -285,6 +286,7 @@ int do_with_one_pipe(struct value_st *input){
         close(0);
         dup(pipe_1_m1[0]);
         int bytes = 0;
+        memset(read_buf, 0, buf_size);
         if((bytes = read(0, read_buf, buf_size)) < 0) {
             write(2, "cannot read from pipe\n", 23);
             exit(-1);
