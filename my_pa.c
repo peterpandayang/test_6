@@ -146,16 +146,6 @@ int check_asc(char* read_buf){
     return result;
 }
 
-void print_buf(char* read_buf){
-    int i = 0;
-    int len = strlen(read_buf);
-    // write(2, &len, 1);
-    for(i = 0; i < len & &read_buf[i] != '\0'; i++){
-        write(2, &read_buf[i], 1);
-    }
-    read_buf[len] = '\0';
-}
-
 int write_to_file(struct value_st *input, char* read_buf, int index, char* cmd){
     int bytes, lines;
     char* bytes_str;
@@ -163,16 +153,9 @@ int write_to_file(struct value_st *input, char* read_buf, int index, char* cmd){
     char* index_str;
     char write_buf[1024];
     int is_asc = 0;
-    // int fds[2];
-
-    // print_buf(read_buf);
 
     bytes = strlen(read_buf);
-    // write(2, &bytes, 2);
-    // write(2, &bytes, 2);
     bytes_str = itoa(bytes);
-    write(2, bytes_str, 2);
-    write(2, bytes_str, 2);
     lines = count_lines(read_buf, bytes);
     lines_str = itoa(lines);
     is_asc = check_asc(read_buf);
@@ -279,13 +262,10 @@ int do_with_one_pipe(struct value_st *input){
         close(pipe_1_m1[1]);
         close(0);
         dup(pipe_1_m1[0]);
-        // int bytes = 0;
         if(read(0, read_buf, 64) < 0) {
             write(2, "cannot read from pipe\n", 23);
             exit(-1);
         }
-        write_to_file(input, &read_buf, 1, input->argv2[0]);
-        // printf("bytes is: %d\n", bytes);
 
         close(1);
         dup(pipe_m1_p[1]);
@@ -344,7 +324,7 @@ int do_with_one_pipe(struct value_st *input){
         write(2, "cannot read from pipe\n", 23);
         exit(-1);
     }
-    // write_to_file(input, &read_buf, 1, input->argv2[0]);
+    write_to_file(input, &read_buf, 1, input->argv2[0]);
 
     return 0;
 }
@@ -377,5 +357,4 @@ int main(int argc, char* argv[]) {
     exec(&input);
 
 }
-
 
