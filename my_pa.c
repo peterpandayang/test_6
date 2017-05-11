@@ -163,15 +163,6 @@ int write_to_file(struct value_st *input, char* read_buf, int index, char* cmd){
     fprintf(f, "%d bytes\n", bytes);
     fprintf(f, "%d lines\n", lines);
 
-    /* print integers and floats */
-    int i = 1;
-    float py = 3.1415927;
-    fprintf(f, "Integer: %d, float: %f\n", i, py);
-
-    /* printing single chatacters */
-    char c = 'A';
-    fprintf(f, "A character: %c\n", c);
-
     fclose(f);
     // char* bytes_str;
     // char* lines_str;
