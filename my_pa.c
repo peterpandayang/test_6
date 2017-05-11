@@ -242,6 +242,11 @@ int do_with_one_pipe(struct value_st *input){
         exit(-1);
     }
     if (id == 0) {
+        close(pipe_m1_2[0]);
+        close(pipe_m1_2[1]);
+        close(pipe_m1_p[0]);
+        close(pipe_m1_p[1]);
+
         close(pipe_1_m1[0]);
         close(1);
         dup(pipe_1_m1[1]);
@@ -259,6 +264,9 @@ int do_with_one_pipe(struct value_st *input){
         exit(-1);
     }
     if (id == 0) {
+        close(pipe_m1_p[0]);
+        close(pipe_m1_p[1]);
+
         close(pipe_1_m1[1]);
         close(0);
         dup(pipe_1_m1[0]);
@@ -293,6 +301,9 @@ int do_with_one_pipe(struct value_st *input){
         exit(-1);
     }
     if (id == 0) {
+        close(pipe_m1_p[0]);
+        close(pipe_m1_p[1]);
+        
         sleep(1);
         close(pipe_m1_2[1]);
         close(0);
