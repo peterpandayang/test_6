@@ -251,6 +251,7 @@ int do_with_one_pipe(struct value_st *input){
     pipe(pipe_1_m1);
     pipe(pipe_m1_p);
     pipe(pipe_m1_2);
+    int bytes;
 
     // entering child 1
     id = fork();
@@ -279,7 +280,6 @@ int do_with_one_pipe(struct value_st *input){
         close(pipe_1_m1[1]);
         close(0);
         dup(pipe_1_m1[0]);
-        int bytes = 0;
         if((bytes = read(0, read_buf, 64)) < 0) {
             write(2, "cannot read from pipe\n", 23);
             exit(-1);
