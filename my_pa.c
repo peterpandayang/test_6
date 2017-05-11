@@ -146,8 +146,8 @@ int check_asc(char* read_buf){
     return result;
 }
 
-int write_to_file(struct value_st *input, char* read_buf, int index, char* cmd){
-    int bytes;
+int write_to_file(struct value_st *input, char* read_buf, int index, char* cmd, int bytes){
+    // int bytes;
     int lines;
     char* bytes_str;
     char* lines_str;
@@ -264,11 +264,11 @@ int do_with_one_pipe(struct value_st *input){
         close(0);
         dup(pipe_1_m1[0]);
         int bytes = 0;
-        if(read(0, read_buf, buf_size) < 0) {
+        if((bytes = read(0, read_buf, buf_size)) < 0) {
             write(2, "cannot read from pipe\n", 23);
             exit(-1);
         }
-        write_to_file(input, &read_buf, 1, input->argv2[0]);
+        write_to_file(input, &read_buf, 1, input->argv2[0], bytes);
 
         close(1);
         dup(pipe_m1_p[1]);
