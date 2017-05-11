@@ -163,7 +163,7 @@ int do_with_one_pipe(struct value_st *input){
         dup(pipe2[0]);
         close(pipe2[0]);
         // start to write to file
-        int file_fd = open("pa.log", O_WRONLY | O_APPEND);
+        int file_fd = open("pa.log", O_CREAT | O_WRONLY | O_APPEND );
         if (file_fd < 0) {
             perror("file_fd is less than 0");
         }
