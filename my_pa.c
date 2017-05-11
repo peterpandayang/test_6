@@ -59,22 +59,31 @@ int exec_process_1(struct value_st *input){
     char *path = malloc(strlen(root) + strlen(cmd) + 1);
     strcpy(path, root);
     strcat(path, cmd);
+    int arg_add = input->process[0] + 1;
+    char *args[arg_add];
+    args[0] = cmd;
+    args[arg_add - 1] = (char *)NULL;
+    int i = 1;
+    for(i = 1 ; i < arg_add - 1; i++){
+        args[1] = input->argv1[i];
+    }
+    execvp(path, args);
 
-    if(input->process[0] - 1 == 1){
-        char *args[3];
-        args[0] = cmd;
-        args[1] = input->argv1[1];
-        args[2] = (char *)NULL;
-        execvp(path, args);
-    }
-    else if(input->process[0] - 1 == 2){
-        char *args[4];
-        args[0] = cmd;
-        args[1] = input->argv1[1];
-        args[2] = input->argv1[2];
-        args[3] = (char *)NULL;
-        execvp(path, args);
-    }
+    // if(input->process[0] - 1 == 1){
+    //     char *args[3];
+    //     args[0] = cmd;
+    //     args[1] = input->argv1[1];
+    //     args[2] = (char *)NULL;
+    //     execvp(path, args);
+    // }
+    // else if(input->process[0] - 1 == 2){
+    //     char *args[4];
+    //     args[0] = cmd;
+    //     args[1] = input->argv1[1];
+    //     args[2] = input->argv1[2];
+    //     args[3] = (char *)NULL;
+    //     execvp(path, args);
+    // }
 }
 
 int exec_process_2(struct value_st *input){
@@ -84,21 +93,31 @@ int exec_process_2(struct value_st *input){
     strcpy(path, root);
     strcat(path, cmd);
 
-    if(input->process[1] - 1 == 1){
-        char *args[3];
-        args[0] = cmd;
-        args[1] = input->argv2[1];
-        args[2] = (char *)NULL;
-        execvp(path, args);
+    int arg_add = input->process[1] + 1;
+    char *args[arg_add];
+    args[0] = cmd;
+    args[arg_add - 1] = (char *)NULL;
+    int i = 1;
+    for(i = 1 ; i < arg_add - 1; i++){
+        args[1] = input->argv2[i];
     }
-    else if(input->process[1] - 1 == 2){
-        char *args[4];
-        args[0] = cmd;
-        args[1] = input->argv2[1];
-        args[2] = input->argv2[2];
-        args[3] = (char *)NULL;
-        execvp(path, args);
-    }
+    execvp(path, args);
+
+    // if(input->process[1] - 1 == 1){
+    //     char *args[3];
+    //     args[0] = cmd;
+    //     args[1] = input->argv2[1];
+    //     args[2] = (char *)NULL;
+    //     execvp(path, args);
+    // }
+    // else if(input->process[1] - 1 == 2){
+    //     char *args[4];
+    //     args[0] = cmd;
+    //     args[1] = input->argv2[1];
+    //     args[2] = input->argv2[2];
+    //     args[3] = (char *)NULL;
+    //     execvp(path, args);
+    // }
 }
 
 int do_without_pipe(struct value_st *input){
