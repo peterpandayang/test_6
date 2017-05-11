@@ -133,17 +133,14 @@ int write_to_file(struct value_st *input, char* read_buf, int index, char* cmd){
     int lines;
     int is_asc = 0;
     is_asc = check_asc(read_buf);
-
     bytes = strlen(read_buf);
     lines = count_lines(read_buf, bytes);
-
     FILE *f = fopen("pa.log", "w");
-    if (f == NULL)
-    {
+
+    if (f == NULL){
         printf("Error opening file!\n");
         exit(1);
     }
-
     fprintf(f, "[1] %s -> %s\n", input->argv1[0], cmd);
     fprintf(f, "%d bytes\n", bytes);
     fprintf(f, "%d lines\n", lines);
@@ -153,9 +150,7 @@ int write_to_file(struct value_st *input, char* read_buf, int index, char* cmd){
     else{
         fprintf(f, "Binary data\n");
     }
-
     fclose(f);
-
     return 0;
 }
 
@@ -163,10 +158,8 @@ int do_without_pipe(struct value_st *input){
     pid_t id;
     int pipe1[2];
     char read_buf[buf_size];
-
     pipe(pipe1);
     id = fork();
-
     if (id < 0) {
         printf("fork() for first process failed\n");
         exit(-1);
@@ -180,8 +173,7 @@ int do_without_pipe(struct value_st *input){
         }
     }
     close(pipe1[0]);
-    close(pipe1[1]);
-    
+    close(pipe1[1]);    
     id = wait(NULL);
     return 0;
 }
@@ -192,11 +184,9 @@ int do_with_one_pipe(struct value_st *input){
     int pipe_m1_p[2];
     int pipe_m1_2[2];
     char read_buf[buf_size];
-
     pipe(pipe_1_m1);
     pipe(pipe_m1_p);
     pipe(pipe_m1_2);
-
     // entering child 1
     id = fork();
     if (id < 0) {
@@ -214,7 +204,6 @@ int do_with_one_pipe(struct value_st *input){
         }
         exit(0);
     }
-
     // entering m1
     id = fork();
     if (id < 0) {
@@ -230,23 +219,18 @@ int do_with_one_pipe(struct value_st *input){
             write(2, "cannot read from pipe\n", 23);
             exit(-1);
         }
-
         close(1);
         dup(pipe_m1_p[1]);
         close(pipe_m1_p[1]);
-
         if (write(1, read_buf, strlen(read_buf)) < 0) {
            write(2, "cannot write to pipe\n", 21);
         }
-
         close(1);
         dup(pipe_m1_2[1]);
         close(pipe_m1_2[1]);
-
         if (write(1, read_buf, strlen(read_buf)) < 0) {
            write(2, "cannot write to pipe\n", 21);
         }
-
         exit(0);
     }
 
@@ -262,35 +246,62 @@ int do_with_one_pipe(struct value_st *input){
         close(0);
         dup(pipe_m1_2[0]);
         close(pipe_m1_2[0]);
-
         if (exec_process_2(input) < 0) {
             write(2, "execlp() failed for prog1\n", 27);
             exit(-1);
         }
         exit(0);
     }
-
     close(pipe_1_m1[0]);
     close(pipe_1_m1[1]);
     close(pipe_m1_2[0]);
     close(pipe_m1_2[1]);
-
     id = wait(NULL);
     id = wait(NULL);
     id = wait(NULL);
-
     close(pipe_m1_p[1]);
     close(0);
     dup(pipe_m1_p[0]);
     close(pipe_m1_p[0]);
-
     memset(read_buf, 0, buf_size);
-    if(read(0, read_buf, buf_size) < 0) {
-        write(2, "cannot read from pipe\n", 23);
-        exit(-1);
+    // if(read(0, read_buf, buf_size) < 0) {
+    //     write(2, "cannot read from pipe\n", 23);
+    //     exit(-1);
+    // }
+    // write_to_file(input, &read_buf, 1, input->argv2[0]);
+    char buf[32];
+    int i = 0;
+    int bytes = 0;
+    int lines = 0;
+    int is_asc = 1;
+    while(read(0, &buf[i], 1) > 0) {
+        bytes += 1;
+        if(&buf[i] == '\n'){
+            lines += 1;
+        }
+        if(&buf[i] - '0' > 127){
+            is_asc = 0;
+        }
+        i += 1;
     }
-    write_to_file(input, &read_buf, 1, input->argv2[0]);
 
+    FILE *f = fopen("pa.log", "w");
+
+    if (f == NULL){
+        printf("Error opening file!\n");
+        exit(1);
+    }
+    fprintf(f, "[1] %s -> %s\n", input->argv1[0], cmd);
+    fprintf(f, "%d bytes\n", bytes);
+    fprintf(f, "%d lines\n", lines);
+    if(is_asc == 1){
+        fprintf(f, "ASCII data\n");
+    }
+    else{
+        fprintf(f, "Binary data\n");
+    }
+    fclose(f);
+    // write_to_file(input, &read_buf, 1, input->argv2[0]);
     return 0;
 }
 
@@ -304,7 +315,6 @@ int exec(struct value_st *input){
     else if(input->pipe_count >= 2){
         printf("does not support more than 2 pipes\n");
     }
-
     return 0;
 }
 
