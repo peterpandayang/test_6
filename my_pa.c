@@ -209,6 +209,7 @@ int write_to_file(struct value_st *input, char* read_buf, int index, char* cmd){
     close(1);
     dup(file_fd);
     printf("bytes: %d\n", bytes);
+    printf("asdfasdf\n");
     // if (write(file_fd, write_buf, strlen(write_buf)) < 0) {
     //     write(2, "There was an error writing to pa.log.txt\n", 43);
     //     exit(-1);
