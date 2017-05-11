@@ -208,10 +208,10 @@ int write_to_file(struct value_st *input, char* read_buf, int index, char* cmd, 
     }
     close(1);
     dup(file_fd);
-    fprintf("[1] %s -> %s\n", input->argv1[0], cmd);
+    printf("[1] %s -> %s\n", input->argv1[0], cmd);
     printf("bytes is: %s\n", bytes);
-    fprintf("%d bytes\n", bytes);
-    fprintf("%d lines\n", lines);
+    printf("%d bytes\n", bytes);
+    printf("%d lines\n", lines);
     // if (write(file_fd, write_buf, strlen(write_buf)) < 0) {
     //     write(2, "There was an error writing to pa.log.txt\n", 43);
     //     exit(-1);
