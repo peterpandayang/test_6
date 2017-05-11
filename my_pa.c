@@ -266,6 +266,7 @@ int do_with_one_pipe(struct value_st *input){
             write(2, "cannot read from pipe\n", 23);
             exit(-1);
         }
+        write_to_file(input, &read_buf, 1, input->argv2[0]);
 
         close(1);
         dup(pipe_m1_p[1]);
@@ -324,7 +325,7 @@ int do_with_one_pipe(struct value_st *input){
         write(2, "cannot read from pipe\n", 23);
         exit(-1);
     }
-    write_to_file(input, &read_buf, 1, input->argv2[0]);
+    // write_to_file(input, &read_buf, 1, input->argv2[0]);
 
     return 0;
 }
