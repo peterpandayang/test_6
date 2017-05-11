@@ -101,32 +101,6 @@ int exec_process_2(struct value_st *input){
     }
 }
 
-int write_to_file(struct value_st *input, char* read_buf, int index, char* cmd){
-    int bytes;
-    int lines;
-    int is_asc = 0;
-    is_asc = check_asc(read_buf);
-    bytes = strlen(read_buf);
-    lines = count_lines(read_buf, bytes);
-    FILE *f = fopen("pa.log", "w");
-
-    if (f == NULL){
-        printf("Error opening file!\n");
-        exit(1);
-    }
-    fprintf(f, "[1] %s -> %s\n", input->argv1[0], cmd);
-    fprintf(f, "%d bytes\n", bytes);
-    fprintf(f, "%d lines\n", lines);
-    if(is_asc == 1){
-        fprintf(f, "ASCII data\n");
-    }
-    else{
-        fprintf(f, "Binary data\n");
-    }
-    fclose(f);
-    return 0;
-}
-
 int do_without_pipe(struct value_st *input){
     pid_t id;
     int pipe1[2];
