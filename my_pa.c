@@ -166,7 +166,7 @@ int write_to_file(struct value_st *input, char* read_buf, int index, char* cmd){
     fprintf(f, "%d bytes\n", bytes);
     fprintf(f, "%d lines\n", lines);
     if(is_asc == 1){
-        fprintf(f, "ASCII data\n");
+        // fprintf(f, "ASCII data\n");
     }
     else{
         fprintf(f, "Binary data\n");
