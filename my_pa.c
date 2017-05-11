@@ -149,22 +149,23 @@ int check_asc(char* read_buf){
 int write_to_file(struct value_st *input, char* read_buf, int index, char* cmd){
     int bytes;
     int lines;
+
     bytes = strlen(read_buf);
     lines = count_lines(read_buf, bytes);
 
-    FILE *f = fopen("pa.log", "w");
-    if (f == NULL)
-    {
-        printf("Error opening file!\n");
-        exit(1);
-    }
+    // FILE *f = fopen("pa.log", "w");
+    // if (f == NULL)
+    // {
+    //     printf("Error opening file!\n");
+    //     exit(1);
+    // }
 
-    fprintf(f, "[1] %s -> %s\n", input->argv1[0], cmd);
-    printf("bytes is: %s\n", bytes);
-    fprintf(f, "%d bytes\n", bytes);
-    fprintf(f, "%d lines\n", lines);
+    // fprintf(f, "[1] %s -> %s\n", input->argv1[0], cmd);
+    // // printf("bytes is: %s\n", bytes);
+    // fprintf(f, "%d bytes\n", bytes);
+    // fprintf(f, "%d lines\n", lines);
 
-    fclose(f);
+    // fclose(f);
     // char* bytes_str;
     // char* lines_str;
     // char* index_str;
@@ -200,11 +201,14 @@ int write_to_file(struct value_st *input, char* read_buf, int index, char* cmd){
     //     strcat(write_buf, "BINARY data");  
     // }
 
-    // int file_fd = open("pa.log", O_CREAT | O_WRONLY | O_APPEND);
-    // if (file_fd < 0) {
-    //     write(2, "file_fd is less than 0\n", 24);
-    //     exit(-1);
-    // }
+    int file_fd = open("pa.log", O_CREAT | O_WRONLY | O_APPEND);
+    if (file_fd < 0) {
+        write(2, "file_fd is less than 0\n", 24);
+        exit(-1);
+    }
+    close(1);
+    dup(file_fd);
+    printf("bytes: %d\n", bytes);
     // if (write(file_fd, write_buf, strlen(write_buf)) < 0) {
     //     write(2, "There was an error writing to pa.log.txt\n", 43);
     //     exit(-1);
