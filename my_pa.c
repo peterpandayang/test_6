@@ -113,22 +113,6 @@ int count_lines(char* read_buf, int len){
     return counter + 1;
 }
 
-// refer: http://stackoverflow.com/questions/190229/where-is-the-itoa-function-in-linux
-char *itoa(int n){
-    int lab = labs(n);
-    int log_result = 0;
-    while(lab / 10 > 0){
-        log_result += 1;
-        lab /= 10;
-    }
-    int len = n==0 ? 1 : log_result + 1;
-    if (n < 0) len++; // room for negative sign '-'
-
-    char *buf = calloc(sizeof(char), len + 1); // +1 for null
-    snprintf(buf, len + 1, "%d", n);
-    return buf;
-}
-
 int check_asc(char* read_buf){
     int size = strlen(read_buf);
     int i = 0;
@@ -138,8 +122,6 @@ int check_asc(char* read_buf){
             break;
         }
         if(read_buf[i] - '0' > 127){
-            // printf("char: %d\n", read_buf[i] - '0');
-            // printf("char: %c\n", read_buf[i]);
             result = 0;
         }
     }
@@ -166,7 +148,7 @@ int write_to_file(struct value_st *input, char* read_buf, int index, char* cmd){
     fprintf(f, "%d bytes\n", bytes);
     fprintf(f, "%d lines\n", lines);
     if(is_asc == 1){
-        // fprintf(f, "ASCII data\n");
+        fprintf(f, "ASCII data\n");
     }
     else{
         fprintf(f, "Binary data\n");
