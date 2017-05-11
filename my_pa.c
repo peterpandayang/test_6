@@ -9,7 +9,7 @@
 #include <unistd.h>
 
 
-#define process_count 3
+#define process_count 2
 #define param_count 16
 #define buf_size 64
 
@@ -18,7 +18,6 @@ struct value_st{
     int process[process_count];
     char *argv1[param_count];
     char *argv2[param_count];
-    char *argv3[param_count];
 };
 
 
@@ -29,7 +28,7 @@ void parse_input(int argc, char* argv[], struct value_st *input){
             input->pipe_count += 1;
         }
     }
-    if(input->count == 2){
+    if(input->count >= 2){
         printf("does not support more than 2 pipes\n");
         exit(0);
     }
@@ -44,9 +43,6 @@ void parse_input(int argc, char* argv[], struct value_st *input){
             }
             if(i == 1){
                 input->argv2[j] = argv[fast];   
-            }
-            if(i == 2){
-                input->argv3[j] = argv[fast];   
             }
             j += 1;
             fast += 1;
